@@ -3,7 +3,7 @@ import { Project, Experience, HeroContent, SiteConfig } from "../types";
 export const siteConfig: SiteConfig = {
   name: "Shagun Tiwari",
   role: "Product Manager",
-  bio: "Product Manager shaping user-centered decisions into shipped outcomes with clarity and impact.",
+  bio: "Portfolio of Shagun Tiwari, a Product Manager shaping user-centered decisions into shipped outcomes with clarity and impact across B2B SaaS and Fintech.",
   url: "https://shaguntiwari.vercel.app/",
   socials: {
     linkedin: "https://www.linkedin.com/in/shagun06",

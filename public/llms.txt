@@ -1,0 +1,27 @@
+# Shagun Tiwari | Product Manager | Scaling SaaS & Marketplace
+
+Portfolio of Shagun Tiwari, a Product Manager shaping user-centered decisions into shipped outcomes with clarity and impact across B2B SaaS and Fintech.
+
+## Core Expertise
+- Product Strategy & Roadmapping
+- User Research & Contextual Interviews
+- Marketplace Dynamics & Liquidity
+- B2B SaaS Workflow Simplification
+- Cross-functional Leadership & Execution
+
+## Professional Experience
+- **CloudHire (Growth)**: Re-architecting talent-matching criteria and scaling remote hiring platforms.
+- **Dice (Marketplace)**: Delivering streamlined user workflows and feature optimizations for a high-growth environment.
+- **EnKash (Fintech)**: Simplifying complex B2B payment dashboards and transactional flows for mid-market clients.
+
+## Technical Details
+- Built with: Next.js 16, React 19, TypeScript, Tailwind CSS
+- Animations: GSAP, Framer Motion, Lenis (Smooth Scroll)
+- UI: Three.js integration for architectural visual elements
+
+## Links
+- [Website](https://shaguntiwari.vercel.app/)
+- [LinkedIn](https://www.linkedin.com/in/shagun06)
+- [Medium](https://medium.com/@shaguntiwari0611)
+- [Resume](https://shaguntiwari.vercel.app/resume.pdf)
+- [Sitemap](https://shaguntiwari.vercel.app/sitemaps/sitemap.xml)

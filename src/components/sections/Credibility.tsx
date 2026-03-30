@@ -6,7 +6,7 @@ const CREDENTIALS = [
   { label: "Product", value: "CloudHire" },
   { label: "Growth", value: "Ex-Dice" },
   { label: "Impact", value: "Ex-NoBroker" },
-  { label: "Experience", value: "4+ Years" },
+  { label: "Experience", value: "3+ Years" },
 ];
 
 export function Credibility() {

@@ -3,7 +3,7 @@
 import { siteConfig } from "@/content";
 import { GlassButton } from "@/components/ui/Glass";
 import { motion } from "framer-motion";
-import { Briefcase, User, Layers, Mail } from "lucide-react";
+import { Briefcase, User, Layers } from "lucide-react";
 import Image from "next/image";
 import { useSmoothScroll } from "@/components/ui/SmoothScrollProvider";
 
@@ -39,7 +39,6 @@ export function Header() {
               width={120}
               height={120}
               className="h-8 w-auto invert"
-              priority
             />
           </motion.div>
 
@@ -64,7 +63,7 @@ export function Header() {
       </header>
 
       {/* ================= MOBILE TOP BAR ================= */}
-      <header className="md:hidden fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-5 py-1 glass-panel">
+      <header className="md:hidden fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 mt-1">
         <div
           className="cursor-pointer hover:opacity-70 transition-opacity"
           onClick={() => scrollTo(0)}
@@ -72,10 +71,9 @@ export function Header() {
           <Image
             src="/assets/logo.svg"
             alt={siteConfig.name}
-            width={96}
-            height={24}
-            className="h-6 w-auto invert"
-            priority
+            width={192}
+            height={48}
+            className="h-16 w-auto invert"
           />
         </div>
 

@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState, useMemo } from "react";
-import { Canvas, useFrame, extend } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Wireframe } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
 // ─── Iridescent outer shell ──────────────────────────────────────────────────
@@ -51,7 +51,7 @@ const iridShaderMat = {
 };
 
 // ─── Orbiting tetrahedra ─────────────────────────────────────────────────────
-function OrbitingCrystals({ color, hovered }: { color: string; active: boolean; hovered: boolean }) {
+function OrbitingCrystals({ color, hovered }: { color: string; hovered: boolean }) {
   const group = useRef<THREE.Group>(null!);
   const count = 6;
 
@@ -251,7 +251,7 @@ function Scene({ color }: { color: string }) {
         <GlassSphere color={color} hovered={hovered} />
         <WireShell color={color} hovered={hovered} />
         <Core color={color} hovered={hovered} />
-        <OrbitingCrystals color={color} active={hovered} hovered={hovered} />
+        <OrbitingCrystals color={color} hovered={hovered} />
         <DustMotes color={color} />
       </group>
     </Float>

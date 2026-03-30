@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Allow: /resume.pdf
 
 
 # Prevent search engines from indexing unnecessary files
@@ -8,4 +9,4 @@ Disallow: /src/
 Disallow: /.next/
 
 # Sitemap for proper indexing
-Sitemap: https://shaguntiwari.vercel.app/sitemap.xml
+Sitemap: https://shaguntiwari.vercel.app/sitemaps/sitemap.xml
