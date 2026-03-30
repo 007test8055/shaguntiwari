@@ -17,6 +17,7 @@ export interface Project {
   };
   image?: string;
   link?: string;
+  themeColor?: string;
 }
 
 export interface Experience {
@@ -42,9 +43,11 @@ export interface SiteConfig {
   name: string;
   role: string;
   bio: string;
+  url: string;
   socials: {
     linkedin: string;
     email: string;
-    resume?: string;
+    resume: string;
+    medium: string;
   };
 }

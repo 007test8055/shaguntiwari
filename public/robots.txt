@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+
+# Prevent search engines from indexing unnecessary files
+Disallow: /assets/
+Disallow: /src/
+Disallow: /.next/
+
+# Sitemap for proper indexing
+Sitemap: https://shaguntiwari.vercel.app/sitemap.xml

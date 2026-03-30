@@ -4,6 +4,7 @@ import { siteConfig } from "@/content";
 import { GlassButton } from "@/components/ui/Glass";
 import { motion } from "framer-motion";
 import { Briefcase, User, Layers, Mail } from "lucide-react";
+import Image from "next/image";
 
 export function Header() {
   return (
@@ -17,10 +18,17 @@ export function Header() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="font-display font-bold text-lg tracking-tight hover:text-gray-400 transition-all cursor-pointer"
+            className="hover:opacity-70 transition-opacity cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            {siteConfig.name}
+            <Image
+              src="/assets/logo.svg"
+              alt={siteConfig.name}
+              width={120}
+              height={120}
+              className="h-8 w-auto invert"
+              priority
+            />
           </motion.div>
 
           {/* Nav Links */}
@@ -46,10 +54,17 @@ export function Header() {
       {/* ================= MOBILE TOP BAR ================= */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-5 py-1 glass-panel">
         <div
-          className="font-display font-semibold text-base tracking-tight cursor-pointer"
+          className="cursor-pointer hover:opacity-70 transition-opacity"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          {siteConfig.name}
+          <Image
+            src="/assets/logo.svg"
+            alt={siteConfig.name}
+            width={96}
+            height={24}
+            className="h-6 w-auto invert"
+            priority
+          />
         </div>
 
         <GlassButton className="px-4 py-1 text-sm">

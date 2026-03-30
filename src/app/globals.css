@@ -89,6 +89,11 @@
     *::after {
       cursor: none !important;
     }
+
+    /* Restore default cursor inside modals (resume viewer, etc.) */
+    .fixed.z-50 iframe {
+      cursor: auto !important;
+    }
   }
 }
 
@@ -119,7 +124,18 @@
     font-weight: 800;
     letter-spacing: -0.03em;
   }
+
+  .mask-marquee {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 5%,
+      black 95%,
+      transparent
+    );
+  }
 }
+
 
 /* ── Animations ────────────────────────────────────────────────────────────── */
 
@@ -242,4 +258,47 @@
 
 .ping-slow {
   animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite
+}
+
+.elegant-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.elegant-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.elegant-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 9999px;
+  transition: background-color 0.3s ease;
+}
+.elegant-scrollbar:hover::-webkit-scrollbar-thumb,
+.elegant-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.elegant-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.elegant-scrollbar:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+.elegant-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.elegant-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.elegant-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 9999px;
+}
+.elegant-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.elegant-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.elegant-scrollbar:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }

@@ -4,10 +4,12 @@ export const siteConfig: SiteConfig = {
   name: "Shagun Tiwari",
   role: "Product Manager",
   bio: "Product Manager shaping user-centered decisions into shipped outcomes with clarity and impact.",
+  url: "https://shaguntiwari.vercel.app/",
   socials: {
     linkedin: "https://www.linkedin.com/in/shagun06",
     email: "shaguntiwari0611@gmail.com",
     resume: "/resume.pdf",
+    medium: "https://medium.com/@shaguntiwari0611",
   },
 };
 
@@ -33,6 +35,8 @@ export const projects: Project[] = [
       solution: "Led a cross-functional initiative to redefine the matching criteria, heavily relying on user research and analytics to refine candidate discovery.",
       outcome: "Optimized candidate conversion rates, significantly reduced time-to-hire, and established a scalable product roadmap for future matching iterations.",
     },
+    themeColor: "#6f42d4",
+    link: "https://www.cloudhire.com",
   },
   {
     id: "dice",
@@ -46,6 +50,8 @@ export const projects: Project[] = [
       solution: "Conducted deep qualitative research to map friction points, then collaborated with engineering and design to streamline the critical path.",
       outcome: "Delivered a cohesive user experience that minimized drop-offs and increased engagement metrics across target cohorts.",
     },
+    themeColor: "#00c9e8",
+    link: "https://www.dice.com",
   },
   {
     id: "enkash",
@@ -59,6 +65,8 @@ export const projects: Project[] = [
       solution: "Rearchitected the primary dashboard and payment initiation flows, focusing on clarity, error-prevention, and rapid task completion.",
       outcome: "Increased platform adoption, decreased support tickets related to payment failures, and drove higher transaction volumes.",
     },
+    themeColor: "#f43f5e",
+    link: "https://www.enkash.com",
   },
 ];
 

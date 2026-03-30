@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useMemo, Suspense, useEffect, MutableRefObject } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef, useMemo, Suspense, useEffect, type RefObject } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   MeshTransmissionMaterial,
   Float,
@@ -14,89 +14,130 @@ import * as THREE from "three";
 import { useReducedMotion } from "framer-motion";
 
 /* ── Types ───────────────────────────────────────────────────────────────── */
-type MouseRef = MutableRefObject<{ x: number; y: number }>;
+type MouseState = {
+  x: number;
+  y: number;
+};
 
-/* ── Glass Torus Knot ────────────────────────────────────────────────────── */
+type MouseRef = RefObject<MouseState>;
+
+/* ── Mouse Smoothing (Premium inertia) ───────────────────────────────────── */
+function MouseSmoother({
+  mouse,
+  target,
+}: {
+  mouse: MouseRef;
+  target: MouseRef;
+}) {
+  useFrame(() => {
+    if (!mouse.current || !target.current) return;
+
+    mouse.current.x = THREE.MathUtils.lerp(mouse.current.x, target.current.x, 0.08);
+    mouse.current.y = THREE.MathUtils.lerp(mouse.current.y, target.current.y, 0.08);
+  });
+
+  return null;
+}
+
+/* ── Camera Parallax ─────────────────────────────────────────────────────── */
+function CameraRig({ mouse }: { mouse: MouseRef }) {
+  const { camera } = useThree();
+
+  useFrame(() => {
+    if (!mouse.current) return;
+
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, mouse.current.x * 0.6, 0.05);
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, mouse.current.y * 0.4, 0.05);
+    camera.lookAt(0, 0, 0);
+  });
+
+  return null;
+}
+
+/* ── Glass Knot ─────────────────────────────────────────────────────────── */
 function GlassKnot({ mouse }: { mouse: MouseRef }) {
   const mesh = useRef<THREE.Mesh>(null);
   const reduced = useReducedMotion();
 
-  // Memoised MeshTransmissionMaterial props — expensive to recompute
   const mat = useMemo(
     () => ({
-      samples: 10,
-      resolution: 512,
+      samples: 8,
+      resolution: 256,
       transmission: 1,
-      roughness: 0.02,
-      thickness: 3.0,
-      ior: 1.55,
-      chromaticAberration: 0.09,
-      anisotropy: 0.5,
-      distortion: 0.14,
-      distortionScale: 0.35,
-      temporalDistortion: 0.07,
-      attenuationDistance: 0.55,
-      attenuationColor: "#5b21b6",  // deep violet
-      color: "#c4b5fd",  // violet-300
+      roughness: 0.05,
+      thickness: 2.6,
+      ior: 1.45,
+      chromaticAberration: 0.03,
+      anisotropy: 0.3,
+      distortion: 0.08,
+      distortionScale: 0.2,
+      temporalDistortion: 0.03,
+      attenuationDistance: 0.7,
+      attenuationColor: "#6d28d9",
+      color: "#ddd6fe",
     }),
     []
   );
 
   useFrame((state) => {
-    if (!mesh.current || reduced) return;
+    if (!mesh.current || !mouse.current || reduced) return;
+
     const t = state.clock.elapsedTime;
     const mx = mouse.current.x;
     const my = mouse.current.y;
+    const delta = state.clock.getDelta();
 
-    // Smooth mouse-reactive rotation + slow autonomous spin
-    mesh.current.rotation.x = THREE.MathUtils.lerp(
-      mesh.current.rotation.x, my * 0.4 + t * 0.055, 0.025
-    );
-    mesh.current.rotation.y = THREE.MathUtils.lerp(
-      mesh.current.rotation.y, mx * 0.4 + t * 0.09, 0.025
-    );
-    mesh.current.rotation.z = THREE.MathUtils.lerp(
-      mesh.current.rotation.z, Math.sin(t * 0.25) * 0.06, 0.025
+    const targetX = my * 0.35 + Math.sin(t * 0.3) * 0.08;
+    const targetY = mx * 0.45 + t * 0.08;
+
+    mesh.current.rotation.x = THREE.MathUtils.damp(mesh.current.rotation.x, targetX, 4, delta);
+    mesh.current.rotation.y = THREE.MathUtils.damp(mesh.current.rotation.y, targetY, 4, delta);
+    mesh.current.rotation.z = THREE.MathUtils.damp(
+      mesh.current.rotation.z,
+      Math.sin(t * 0.2) * 0.05,
+      4,
+      delta
     );
   });
 
   return (
-    <Float speed={0.7} rotationIntensity={0.12} floatIntensity={0.9}>
-      {/* Offset to right — leaves left side open for text */}
+    <Float speed={0.6} rotationIntensity={0.1} floatIntensity={0.8}>
       <mesh ref={mesh} position={[2.8, 0, 0]}>
-        <torusKnotGeometry args={[1.35, 0.44, 220, 34, 2, 3]} />
+        <torusKnotGeometry args={[1.35, 0.44, 200, 32, 2, 3]} />
         <MeshTransmissionMaterial {...mat} />
       </mesh>
     </Float>
   );
 }
 
-/* ── Particle Sphere (Fibonacci distribution) ────────────────────────────── */
-function Particles({ count = 2200 }: { count?: number }) {
+/* ── Particles ───────────────────────────────────────────────────────────── */
+function Particles({ count = 32000 }: { count?: number }) {
   const pts = useRef<THREE.Points>(null);
   const reduced = useReducedMotion();
 
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
-    const golden = Math.PI * (3 - Math.sqrt(5)); // golden angle
+    const golden = Math.PI * (3 - Math.sqrt(5));
 
     for (let i = 0; i < count; i++) {
-      const y = 1 - (i / (count - 1)) * 2;          // -1 → 1
-      const radius = Math.sqrt(1 - y * y) * (4.5 + Math.random() * 4.5);
+      const y = 1 - (i / (count - 1)) * 2;
+      const radius = Math.sqrt(1 - y * y) * (4 + Math.random() * 4);
       const theta = golden * i;
 
       arr[i * 3] = radius * Math.cos(theta);
-      arr[i * 3 + 1] = y * (4.5 + Math.random() * 4.5);
+      arr[i * 3 + 1] = y * (4 + Math.random() * 4);
       arr[i * 3 + 2] = radius * Math.sin(theta);
     }
+
     return arr;
   }, [count]);
 
   useFrame((state) => {
     if (!pts.current || reduced) return;
+
     const t = state.clock.elapsedTime;
-    pts.current.rotation.y = t * 0.022;
-    pts.current.rotation.x = Math.sin(t * 0.014) * 0.12;
+    pts.current.rotation.y = t * 0.02;
+    pts.current.rotation.x = Math.sin(t * 0.015) * 0.1;
   });
 
   return (
@@ -104,105 +145,76 @@ function Particles({ count = 2200 }: { count?: number }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial
-        size={0.011}
-        color="#7c3aed"
-        transparent
-        opacity={0.7}
-        sizeAttenuation
-        depthWrite={false}
-      />
+      <pointsMaterial size={0.008} color="#8b5cf6" transparent opacity={0.5} depthWrite={false} />
     </points>
   );
 }
 
-/* ── Slow-Rotating Ambient Rings ─────────────────────────────────────────── */
+/* ── Ambient Rings ───────────────────────────────────────────────────────── */
 function AmbientRings() {
-  const r1 = useRef<THREE.Mesh>(null);
-  const r2 = useRef<THREE.Mesh>(null);
-  const r3 = useRef<THREE.Mesh>(null);
+  const r = useRef<THREE.Group>(null);
 
   useFrame((state) => {
+    if (!r.current) return;
+
     const t = state.clock.elapsedTime;
-    if (r1.current) { r1.current.rotation.x = t * 0.11; r1.current.rotation.z = t * 0.06; }
-    if (r2.current) { r2.current.rotation.y = t * 0.08; r2.current.rotation.z = -t * 0.05; }
-    if (r3.current) { r3.current.rotation.x = -t * 0.07; r3.current.rotation.y = t * 0.04; }
+    r.current.rotation.x = t * 0.05;
+    r.current.rotation.y = t * 0.04;
   });
 
   return (
-    <group position={[2.8, 0, 0]}>
-      <mesh ref={r1}>
-        <torusGeometry args={[3.1, 0.006, 16, 220]} />
-        <meshBasicMaterial color="#4c1d95" transparent opacity={0.35} />
+    <group ref={r} position={[2.8, 0, 0]}>
+      <mesh>
+        <torusGeometry args={[3.2, 0.004, 16, 200]} />
+        <meshBasicMaterial color="#4c1d95" transparent opacity={0.25} />
       </mesh>
-      <mesh ref={r2}>
-        <torusGeometry args={[3.8, 0.004, 16, 220]} />
-        <meshBasicMaterial color="#0e7490" transparent opacity={0.22} />
-      </mesh>
-      <mesh ref={r3}>
-        <torusGeometry args={[4.5, 0.003, 16, 220]} />
-        <meshBasicMaterial color="#5b21b6" transparent opacity={0.15} />
+      <mesh>
+        <torusGeometry args={[4.2, 0.003, 16, 200]} />
+        <meshBasicMaterial color="#0ea5e9" transparent opacity={0.15} />
       </mesh>
     </group>
   );
 }
 
-/* ── Full Scene (inside Canvas) ──────────────────────────────────────────── */
+/* ── Scene ──────────────────────────────────────────────────────────────── */
 function Scene({ mouse }: { mouse: MouseRef }) {
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.08} />
-      <spotLight
-        position={[6, 9, 6]} angle={0.22} penumbra={1}
-        intensity={5} color="#7c3aed" castShadow
-      />
-      <pointLight position={[-7, -4, -6]} intensity={2.5} color="#06b6d4" />
-      <pointLight position={[0, 7, 2]} intensity={0.9} color="#ffffff" />
-      <pointLight position={[9, 0, 4]} intensity={2} color="#6d28d9" />
+      <ambientLight intensity={0.05} />
+      <directionalLight position={[5, 8, 5]} intensity={1.2} />
+      <pointLight position={[6, 2, 6]} intensity={2.5} color="#7c3aed" />
+      <pointLight position={[-6, -2, -4]} intensity={1.5} color="#06b6d4" />
 
-      {/* Scene objects */}
       <GlassKnot mouse={mouse} />
-      <Particles count={2200} />
+      <Particles />
       <AmbientRings />
 
-      {/* Environment & contact shadow */}
-      <Environment preset="night" />
-      <ContactShadows
-        position={[2.8, -3.6, 0]} opacity={0.18}
-        scale={14} blur={4} far={5}
-      />
+      <Environment preset="city" />
+      <ContactShadows position={[2.8, -3.6, 0]} opacity={0.2} scale={12} blur={4} far={5} />
 
-      {/* ── Post-processing ── */}
-      <EffectComposer>
-        {/* Bloom: makes bright glass edges glow beautifully */}
-        <Bloom
-          luminanceThreshold={0.12}
-          luminanceSmoothing={0.92}
-          intensity={2.2}
-          mipmapBlur
-        />
-        {/* Subtle chromatic aberration for that cinematic feel */}
-        <ChromaticAberration
-          offset={new THREE.Vector2(0.0007, 0.0007) as never}
-          radialModulation={false}
-          modulationOffset={0}
-        />
+      <EffectComposer multisampling={0}>
+        <Bloom luminanceThreshold={0.3} intensity={0.9} mipmapBlur />
+        <ChromaticAberration offset={new THREE.Vector2(0.0004, 0.0004) as never} />
       </EffectComposer>
+
+      <CameraRig mouse={mouse} />
     </>
   );
 }
 
-/* ── Main export ─────────────────────────────────────────────────────────── */
+/* ── Main ───────────────────────────────────────────────────────────────── */
 export default function HeroCanvas() {
-  const mouse = useRef({ x: 0, y: 0 });
+  const mouse = useRef<MouseState>({ x: 0, y: 0 });
+  const target = useRef<MouseState>({ x: 0, y: 0 });
 
-  // Track mouse globally so the 3D object can react
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+      if (!target.current) return;
+
+      target.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      target.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
     };
+
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
@@ -212,22 +224,24 @@ export default function HeroCanvas() {
       <Canvas
         gl={{
           antialias: true,
-          alpha: false,
           powerPreference: "high-performance",
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.25,
+          toneMappingExposure: 1.2,
+          alpha: false,
+          stencil: false,
+          depth: true,
         }}
-        dpr={[1, 1.5]}   // cap at 1.5× for perf
+        dpr={[1, 1.5]}
         shadows
-        eventPrefix="client"
+        frameloop="always"
       >
-        {/* Scene background colour & depth fog */}
-        <color attach="background" args={["#03040a"]} />
-        <fog attach="fog" args={["#03040a", 18, 30]} />
+        <color attach="background" args={["#020308"]} />
+        <fog attach="fog" args={["#020308", 18, 30]} />
 
-        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={44} near={0.1} far={100} />
+        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={44} />
 
         <Suspense fallback={null}>
+          <MouseSmoother mouse={mouse} target={target} />
           <Scene mouse={mouse} />
         </Suspense>
       </Canvas>

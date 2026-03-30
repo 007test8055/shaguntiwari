@@ -1,0 +1,58 @@
+{
+  "name": "Shagun Tiwari | Product Manager",
+  "short_name": "Shagun Tiwari",
+  "description": "Product Manager shaping user-centered decisions into shipped outcomes with clarity and impact. Building products with clarity, empathy, and measurable impact.",
+  "start_url": "/",
+  "scope": "/",
+  "theme_color": "#020308",
+  "background_color": "#020308",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "linkedin",
+      "url": "https://www.linkedin.com/in/shagun06"
+    },
+    {
+      "platform": "whatsapp",
+      "url": "https://wa.me/919235849192"
+    }
+  ]
+}

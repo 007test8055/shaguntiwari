@@ -14,7 +14,7 @@ export function GlassPanel({ children, className, ...props }: GlassPanelProps) {
       {...props}
     >
       {/* Refraction effect overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent pointer-events-none" />
       {children}
     </div>
   );

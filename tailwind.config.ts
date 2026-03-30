@@ -22,15 +22,13 @@ const config: Config = {
       },
       animation: {
         marquee: "marquee 30s linear infinite",
-        "marquee-rev": "marquee 30s linear infinite reverse",
         grain: "grain 0.4s steps(1) infinite",
         glow: "glow-pulse 4s ease-in-out infinite",
-        "scroll-dot": "scroll-bounce 2s ease-in-out infinite",
       },
       keyframes: {
         marquee: {
-          from: { transform: "translateX(0%)" },
-          to: { transform: "translateX(-50%)" },
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
         },
         grain: {
           "0%,100%": { transform: "translate(0,0)" },

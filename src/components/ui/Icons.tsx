@@ -22,3 +22,23 @@ export const Linkedin = ({ size = 24, strokeWidth = 2, ...props }: LucideProps) 
     <circle cx="4" cy="4" r="2" />
   </svg>
 );
+
+export const Medium = ({ size = 24, strokeWidth = 2, ...props }: LucideProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <ellipse cx="7" cy="12" rx="5" ry="5" />
+    <ellipse cx="16.5" cy="12" rx="2.5" ry="4.5" />
+    <ellipse cx="21.5" cy="12" rx="1" ry="4" />
+  </svg>
+);
+

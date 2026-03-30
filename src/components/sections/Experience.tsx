@@ -1,8 +1,8 @@
 "use client";
 
-import { experience } from "@/content";
+import { experience } from "../../content";
 import { motion } from "framer-motion";
-import { GlassPanel } from "@/components/ui/Glass";
+import { GlassPanel } from "../ui/Glass";
 
 export function Experience() {
   return (
@@ -24,7 +24,7 @@ export function Experience() {
 
         <div className="relative space-y-12">
           {/* Vertical line */}
-          <div className="absolute left-[20px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-white/20 via-white/10 to-transparent" />
+          <div className="absolute left-[20px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px bg-white/20" />
 
           {experience.map((exp, i) => (
             <motion.div
@@ -41,7 +41,11 @@ export function Experience() {
               <div className="absolute left-[16.5px] md:left-1/2 md:-translate-x-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] z-10" />
 
               {/* Offset for mobile */}
-              <div className="w-full md:w-1/2 pl-12 md:pl-0 md:px-12">
+              <div 
+                className={`w-full md:w-1/2 pl-12 ${
+                  (i & 1) !== 1 ? "md:pl-12 md:pr-0" : "md:pl-0 md:pr-12"
+                }`}
+              >
                 <GlassPanel className="p-6 hover:border-white/20 transition-colors">
                   <div className="flex flex-col gap-1 mb-4">
                     <span className="text-xs font-medium text-accent-secondary uppercase tracking-widest">
@@ -63,7 +67,7 @@ export function Experience() {
                     {exp.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/[0.05] border border-white/[0.1] text-accent-secondary"
+                        className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/10 text-accent-secondary"
                       >
                         {skill}
                       </span>

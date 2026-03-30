@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroCanvas from "../canvas/HeroCanvas";
+import Image from "next/image";
 import {
   ArrowUpRight,
   FileText,
@@ -31,6 +32,25 @@ const Linkedin = (props: React.SVGProps<SVGSVGElement>) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 );
+
+const Medium = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <ellipse cx="7" cy="12" rx="5" ry="5" />
+    <ellipse cx="16.5" cy="12" rx="2.5" ry="4.5" />
+    <ellipse cx="21.5" cy="12" rx="1" ry="4" />
+  </svg>
+);
 import { siteConfig } from "../../content";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -41,7 +61,7 @@ gsap.registerPlugin(ScrollTrigger);
 const STATS = [
   { value: "10+", label: "Products Shipped" },
   { value: "1M+", label: "Users Impacted" },
-  { value: "3 yrs", label: "Experience" },
+  { value: "3yrs+", label: "Experience" },
   { value: "₹10Cr+", label: "Revenue Generated" },
 ];
 
@@ -54,6 +74,7 @@ const MARQUEE_SKILLS = [
 
 const SOCIALS = [
   { Icon: Linkedin, href: siteConfig.socials.linkedin, label: "LinkedIn" },
+  { Icon: Medium, href: siteConfig.socials.medium, label: "Medium" },
   { Icon: Mail, href: `mailto:${siteConfig.socials.email}`, label: "Email" },
 ];
 
@@ -94,24 +115,31 @@ function SplitWords({
 
 /* ── Marquee strip ───────────────────────────────────────────────────────── */
 function MarqueeStrip() {
-  // Duplicate items for a seamless infinite loop
-  const items = [...MARQUEE_SKILLS, ...MARQUEE_SKILLS];
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-20 w-full overflow-hidden border-t border-white/6 py-3 bg-white/1.5 backdrop-blur-sm">
-      <div className="flex animate-marquee whitespace-nowrap will-change-transform">
-        {items.map((skill, i) => (
-          <span
-            key={i}
-            className="flex items-center gap-5 px-5 text-[10px] font-dm font-medium text-white/25 tracking-[0.18em] uppercase"
+    <div className="relative z-20 w-full overflow-hidden border-t border-white/8 py-3 bg-bg/20 backdrop-blur-md mask-marquee">
+      <div className="flex w-max flex-nowrap">
+        {[0, 1].map((idx) => (
+          <div
+            key={idx}
+            className="flex shrink-0 animate-marquee items-center"
+            aria-hidden={idx > 0}
           >
-            <span className="w-[3px] h-[3px] rounded-full bg-violet/60 shrink-0" />
-            {skill}
-          </span>
+            {MARQUEE_SKILLS.map((skill, i) => (
+              <span
+                key={`${idx}-${i}`}
+                className="flex items-center gap-3 px-4 text-[10px] font-dm font-medium text-white/20 tracking-[0.2em] uppercase whitespace-nowrap transition-colors hover:text-white/50"
+              >
+                <span className="w-[4px] h-[4px] rounded-full bg-violet/40 shrink-0" />
+                {skill}
+              </span>
+            ))}
+          </div>
         ))}
       </div>
     </div>
   );
 }
+
 
 /* ── Ambient glow blobs ──────────────────────────────────────────────────── */
 function GlowBlobs() {
@@ -152,7 +180,7 @@ function VerticalLabel() {
         className="text-white/20 text-[9px] font-dm tracking-[0.3em] uppercase"
         style={{ writingMode: "vertical-rl" }}
       >
-        Product Manager · 2024
+        Product Manager - {new Date().getFullYear()}
       </span>
       <div className="w-px h-16 bg-linear-to-b from-white/20 to-transparent" />
     </div>
@@ -176,7 +204,6 @@ export default function HeroSection() {
       gsap.set([".cta-primary", ".cta-secondary"], { opacity: 0, y: 18, scale: 0.96 });
       gsap.set(".stat-item", { opacity: 0, y: 20 });
       gsap.set(".social-btn", { opacity: 0, scale: 0.8 });
-      gsap.set([".scroll-line", ".scroll-label"], { opacity: 0 });
 
       /* ── Master timeline ── */
       const tl = gsap.timeline({
@@ -223,18 +250,9 @@ export default function HeroSection() {
         .to(".social-btn", {
           opacity: 1, scale: 1, stagger: 0.06, duration: 0.5,
           ease: "back.out(2)",
-        }, "-=0.35")
+        }, "-=0.35");
 
-        /* Scroll indicator */
-        .to([".scroll-line", ".scroll-label"], {
-          opacity: 1, duration: 0.5,
-        }, "-=0.2");
 
-      /* ── Scroll indicator bounce (loops forever) ── */
-      gsap.to(".scroll-dot-inner", {
-        y: 10, repeat: -1, yoyo: true, duration: 1.4,
-        ease: "sine.inOut", delay: 2.5,
-      });
 
       /* ── Parallax: content drifts up as user scrolls ── */
       gsap.to(contentRef.current, {
@@ -267,7 +285,7 @@ export default function HeroSection() {
   /* ── Framer Motion mouse-follow for the badge glow ───────────────────── */
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const badgeGlowX = useSpring(useTransform(mouseX, [0, 1], [-20, 20]), { stiffness: 100, damping: 30 });
+  const badgeGlowX = useSpring(useTransform(mouseX, [0, 1], [-10, 10]), { stiffness: 100, damping: 30 });
   const badgeGlowY = useSpring(useTransform(mouseY, [0, 1], [-10, 10]), { stiffness: 100, damping: 30 });
 
   const onMouseMove = (e: React.MouseEvent) => {
@@ -300,31 +318,86 @@ export default function HeroSection() {
       {/* ══════════════════════════ HERO CONTENT ══════════════════════════ */}
       <div
         ref={contentRef}
-        className="relative z-20 flex-1 flex flex-col justify-center px-8 md:px-14 lg:px-16 pb-8"
+        className="relative z-20 flex-1 flex flex-col justify-center px-6 sm:px-8 md:px-14 lg:px-16 pb-4 pt-28 sm:pt-32 lg:pt-0"
       >
+        {/* ── Profile portrait (og-image) — Desktop: absolute right ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 1.4, ease: "easeOut" }}
+          className="hidden lg:block absolute right-16 xl:right-24 top-1/2 -translate-y-[55%] z-10"
+        >
+          <div className="relative group">
+            {/* Outer glow ring */}
+            <div className="absolute -inset-3 rounded-2xl bg-linear-to-br from-violet/25 via-cyan/10 to-violet/15 blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
+            {/* Gradient border frame */}
+            <div className="relative p-[2px] rounded-2xl bg-linear-to-br from-white/20 via-violet/30 to-cyan/20">
+              <div className="rounded-[14px] overflow-hidden bg-bg">
+                <Image
+                  src="/assets/og-image.png"
+                  alt="Shagun Tiwari"
+                  width={280}
+                  height={280}
+                  className="w-56 h-56 xl:w-64 xl:h-64 object-cover rounded-[14px] opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
+                  priority
+                />
+              </div>
+            </div>
+            {/* Decorative accent dot */}
+            <div className="absolute -bottom-2 -right-2 w-4 h-4 rounded-full bg-linear-to-br from-violet to-cyan opacity-60" />
+          </div>
+        </motion.div>
+
+        {/* ── Profile portrait (og-image) — Mobile: inline circular ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
+          className="lg:hidden mb-6"
+        >
+          <div className="relative group inline-block">
+            {/* Outer glow ring */}
+            <div className="absolute -inset-2 rounded-full bg-linear-to-br from-violet/30 via-cyan/15 to-violet/20 blur-lg opacity-70" />
+            {/* Gradient border frame */}
+            <div className="relative p-[2px] rounded-full bg-linear-to-br from-white/20 via-violet/30 to-cyan/20">
+              <div className="rounded-full overflow-hidden bg-bg">
+                <Image
+                  src="/assets/og-image.png"
+                  alt="Shagun Tiwari"
+                  width={160}
+                  height={160}
+                  className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-cover rounded-full opacity-90"
+                  priority
+                />
+              </div>
+            </div>
+            {/* Decorative accent dot */}
+            <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-linear-to-br from-violet to-cyan opacity-60" />
+          </div>
+        </motion.div>
         {/* ── Availability badge ── */}
         <motion.div
-          className="hero-badge mb-8 w-fit"
+          className="hero-badge mb-6 sm:mb-8 w-fit max-w-full"
           style={{ x: badgeGlowX, y: badgeGlowY }}
         >
-          <div className="relative flex items-center gap-3 px-4 py-2 rounded-full border border-white/8 bg-white/3 backdrop-blur-md overflow-hidden">
+          <div className="relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-full border border-white/10 bg-white/4drop-blur-md overflow-hidden">
             {/* Animated background shimmer */}
             <div className="absolute inset-0 bg-linear-to-r from-violet/0 via-violet/5 to-cyan/0 animate-pulse" />
             {/* Pulse dot */}
-            <span className="relative flex h-[7px] w-[7px]">
+            <span className="relative flex h-[8px] w-[8px] shrink-0">
               <span className="ping-slow absolute inline-flex h-full w-full rounded-full bg-emerald-400" />
-              <span className="relative inline-flex rounded-full h-[7px] w-[7px] bg-emerald-400" />
+              <span className="relative inline-flex translate-x-0.5 translate-y-0.5 rounded-full h-[4px] w-[4px] bg-emerald-700" />
             </span>
-            <span className="font-dm text-[11px] font-medium text-white/55 tracking-wide">
-              Available · Open to new opportunities
+            <span className="font-dm text-[10px] sm:text-[11px] font-medium text-white/60 tracking-wide whitespace-nowrap">
+              Available for new opportunities
             </span>
           </div>
         </motion.div>
 
         {/* ── Headline ── */}
         <h1
-          className="font-raleway font-extrabold tracking-[-0.035em] leading-[0.9] mb-7"
-          style={{ fontSize: "clamp(3.2rem, 8.5vw, 7.5rem)" }}
+          className="font-raleway font-extrabold tracking-[-0.035em] leading-[0.9] mb-6 sm:mb-7 mt-4 lg:mt-0"
+          style={{ fontSize: "clamp(2.5rem, 9.5vw, 7.5rem)" }}
         >
           {/* Line 1 */}
           <span className="block">
@@ -392,7 +465,7 @@ export default function HeroSection() {
       </div>
 
       {/* ══════════════════════════ BOTTOM BAR ════════════════════════════ */}
-      <div className="relative z-20 flex items-end justify-between px-6 md:px-10 pb-16">
+      <div className="relative z-20 flex items-center justify-between px-4 md:px-16 pb-4">
         {/* Social links */}
         <div className="flex items-center gap-3">
           {SOCIALS.map(({ Icon, href, label }) => (
@@ -404,22 +477,13 @@ export default function HeroSection() {
               aria-label={label}
               whileHover={{ scale: 1.15, y: -2 }}
               whileTap={{ scale: 0.92 }}
-              className="social-btn w-9 h-9 rounded-full border border-white/8 bg-white/3 backdrop-blur-sm flex items-center justify-center text-white/35 hover:text-white hover:border-white/20 transition-all duration-200"
+              className="social-btn w-9 h-9 rounded-full border border-white/8 bg-white/3 backdrop-blur-sm flex items-center justify-center text-white/35 hover:text-white hover:border-white/20 transition-all duration-100"
             >
-              <Icon className="w-3.5 h-3.5" />
+              <Icon className="w-5 h-5" />
             </motion.a>
           ))}
         </div>
 
-        {/* Scroll indicator */}
-        <div className="flex flex-col items-center gap-2">
-          <div className="scroll-line relative w-px h-14 bg-white/50 overflow-hidden">
-            <div className="scroll-dot-inner absolute top-0 left-0 w-full h-5 bg-linear-to-b from-violet to-transparent rounded-full" />
-          </div>
-          <span className="scroll-label font-dm text-[9px] text-white/75 tracking-[0.25em] uppercase">
-            Scroll
-          </span>
-        </div>
       </div>
 
       {/* ══════════════════════════ MARQUEE STRIP ═════════════════════════ */}
@@ -433,6 +497,7 @@ export default function HeroSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 bg-black/60 backdrop-blur-md"
+            style={{ cursor: "auto" }}
             onClick={() => setIsResumeModalOpen(false)}
           >
             <motion.div
@@ -440,6 +505,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-5xl h-[85vh] bg-bg border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+              style={{ cursor: "auto" }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5 backdrop-blur-sm">
@@ -450,6 +516,7 @@ export default function HeroSection() {
                 <button
                   onClick={() => setIsResumeModalOpen(false)}
                   className="p-2 rounded-full hover:bg-white/10 transition-colors text-white/60 hover:text-white"
+                  style={{ cursor: "pointer" }}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -458,6 +525,7 @@ export default function HeroSection() {
                 <iframe
                   src={siteConfig.socials.resume}
                   className="w-full h-full border-0"
+                  style={{ cursor: "auto" }}
                   title="Resume"
                 />
               </div>

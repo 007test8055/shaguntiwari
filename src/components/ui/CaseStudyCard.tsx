@@ -15,13 +15,22 @@ export function CaseStudyCard({ project, onClick }: CaseStudyCardProps) {
     <motion.div
       layoutId={`card-${project.id}`}
       onClick={() => onClick(project)}
+      transition={{ 
+        type: "spring", 
+        damping: 20, 
+        stiffness: 100, 
+        mass: 1
+      }}
       className="cursor-pointer group h-full"
     >
       <GlassPanel className="h-full flex flex-col p-0 overflow-hidden hover:border-white/30 transition-colors">
         {/* Card Image / Placeholder */}
-        <div className="aspect-video w-full bg-linear-to-br from-white/5 to-white/10 relative overflow-hidden">
+        <div 
+          className="aspect-video w-full relative overflow-hidden" 
+          style={{ background: `linear-gradient(135deg, ${project.themeColor}15, ${project.themeColor}30)` }}
+        >
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-white/10 font-display font-bold text-6xl select-none">
+            <span className="font-display font-bold text-6xl select-none" style={{ color: `${project.themeColor}20` }}>
               {project.title.charAt(0)}
             </span>
           </div>
@@ -44,11 +53,11 @@ export function CaseStudyCard({ project, onClick }: CaseStudyCardProps) {
           <h3 className="text-2xl font-display font-bold text-white mb-2 group-hover:text-white transition-colors">
             {project.title}
           </h3>
-          <p className="text-sm font-body text-accent-secondary leading-relaxed mb-6">
+          <p className="text-sm font-body text-accent-secondary leading-relaxed mb-6 overflow-y-auto elegant-scrollbar flex-1 pr-2">
             {project.description}
           </p>
 
-          <div className="mt-auto pt-6 border-t border-white/5 flex justify-between items-center">
+          <div className="mt-auto pt-6 border-t border-white/5 flex justify-between items-center shrink-0">
             <span className="text-xs font-medium text-white/50">{project.role}</span>
             <span className="text-[10px] uppercase font-bold tracking-widest text-white/90">Read Case Study</span>
           </div>
