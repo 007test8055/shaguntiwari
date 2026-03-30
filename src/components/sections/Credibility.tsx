@@ -11,12 +11,12 @@ const CREDENTIALS = [
 
 export function Credibility() {
   return (
-    <section className="py-20 border-y border-white/[0.05] bg-white/[0.01]">
+    <section className="py-20 border-y border-white/5 bg-white/1">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {CREDENTIALS.map((cred, i) => (
             <motion.div
-              key={cred.label}
+              key={i + cred.label + cred.value}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

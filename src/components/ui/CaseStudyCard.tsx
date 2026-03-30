@@ -15,18 +15,18 @@ export function CaseStudyCard({ project, onClick }: CaseStudyCardProps) {
     <motion.div
       layoutId={`card-${project.id}`}
       onClick={() => onClick(project)}
-      transition={{ 
-        type: "spring", 
-        damping: 20, 
-        stiffness: 100, 
+      transition={{
+        type: "spring",
+        damping: 20,
+        stiffness: 100,
         mass: 1
       }}
       className="cursor-pointer group h-full"
     >
       <GlassPanel className="h-full flex flex-col p-0 overflow-hidden hover:border-white/30 transition-colors">
         {/* Card Image / Placeholder */}
-        <div 
-          className="aspect-video w-full relative overflow-hidden" 
+        <div
+          className="aspect-video w-full relative overflow-hidden"
           style={{ background: `linear-gradient(135deg, ${project.themeColor}15, ${project.themeColor}30)` }}
         >
           <div className="absolute inset-0 flex items-center justify-center">
@@ -34,7 +34,7 @@ export function CaseStudyCard({ project, onClick }: CaseStudyCardProps) {
               {project.title.charAt(0)}
             </span>
           </div>
-          
+
           <div className="absolute top-4 right-4 p-2 rounded-full glass-panel opacity-0 group-hover:opacity-100 transition-opacity">
             <ArrowUpRight className="w-4 h-4 text-white" />
           </div>
@@ -44,12 +44,12 @@ export function CaseStudyCard({ project, onClick }: CaseStudyCardProps) {
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex flex-wrap gap-2 mb-4">
             {project.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="text-[9px] uppercase tracking-wider text-accent-secondary">
+              <span key={tag + project.id + project.title + project.description} className="text-[9px] uppercase tracking-wider text-accent-secondary">
                 {tag}
               </span>
             ))}
           </div>
-          
+
           <h3 className="text-2xl font-display font-bold text-white mb-2 group-hover:text-white transition-colors">
             {project.title}
           </h3>

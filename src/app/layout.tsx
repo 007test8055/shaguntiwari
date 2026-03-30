@@ -43,9 +43,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/assets/og-image.png",
+        url: "/assets/banner.png",
         width: 1200,
-        height: 630,
+        height: 600,
         alt: `${siteConfig.name} - Product Manager Portfolio`,
       },
     ],
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${siteConfig.name} | ${siteConfig.role}`,
     description: siteConfig.bio,
-    images: ["/assets/og-image.png"],
+    images: ["/assets/banner.png"],
   },
   robots: {
     index: true,

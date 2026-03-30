@@ -36,7 +36,7 @@ export const projects: Project[] = [
       outcome: "Optimized candidate conversion rates, significantly reduced time-to-hire, and established a scalable product roadmap for future matching iterations.",
     },
     themeColor: "#6f42d4",
-    link: "https://www.cloudhire.com",
+    link: "https://medium.com/@shaguntiwari0611/how-slack-can-make-save-for-later-a-go-to-productivity-tool-0f303d7ea98b",
   },
   {
     id: "dice",
@@ -51,7 +51,7 @@ export const projects: Project[] = [
       outcome: "Delivered a cohesive user experience that minimized drop-offs and increased engagement metrics across target cohorts.",
     },
     themeColor: "#00c9e8",
-    link: "https://www.dice.com",
+    link: "https://medium.com/@shaguntiwari0611/flightpath-growth-how-data-unlocked-gofirsts-next-chapter-3de1007aa72f",
   },
   {
     id: "enkash",
@@ -66,7 +66,7 @@ export const projects: Project[] = [
       outcome: "Increased platform adoption, decreased support tickets related to payment failures, and drove higher transaction volumes.",
     },
     themeColor: "#f43f5e",
-    link: "https://www.enkash.com",
+    link: "https://medium.com/@shaguntiwari0611/recharge-smarter-how-smart-filters-can-transform-phonepes-mobile-recharge-experience-8eeb7ee85640",
   },
 ];
 

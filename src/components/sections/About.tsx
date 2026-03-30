@@ -43,7 +43,7 @@ export function About() {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl font-display font-bold text-white mb-8 leading-tight"
             >
-              Product management is the art of <span className="text-accent-secondary italic">reducing ambiguity</span> and 
+              Product management is the art of <span className="text-accent-secondary italic">reducing ambiguity</span> and
               driving alignment.
             </motion.h2>
             <motion.p
@@ -53,7 +53,7 @@ export function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg font-body text-accent-secondary leading-relaxed mb-10 max-w-lg"
             >
-              I believe in a product-led approach that balances strategic vision with tactical excellence. 
+              I believe in a product-led approach that balances strategic vision with tactical excellence.
               My process is built on clarity, empathy, and a relentless focus on business impact.
             </motion.p>
           </div>
@@ -61,7 +61,7 @@ export function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PHILOSOPHY_POINTS.map((point, i) => (
               <motion.div
-                key={point.title}
+                key={i + point.title + point.description}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}

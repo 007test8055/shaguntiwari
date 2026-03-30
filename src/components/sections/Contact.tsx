@@ -85,14 +85,14 @@ export function Contact() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <a 
+              <a
                 href={`mailto:${siteConfig.socials.email}`}
                 className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 hover:bg-white/5 transition-colors text-sm text-white/70"
               >
                 <Mail className="w-4 h-4" />
                 {siteConfig.socials.email}
               </a>
-              <a 
+              <a
                 href={siteConfig.socials.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -101,7 +101,7 @@ export function Contact() {
                 <Linkedin className="w-4 h-4" />
                 LinkedIn
               </a>
-              <a 
+              <a
                 href={siteConfig.socials.medium}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -124,7 +124,7 @@ export function Contact() {
               <AnimatePresence mode="wait">
                 {isSuccess ? (
                   <motion.div
-                    key="success"
+                    key={isSuccess + formData.name + formData.email + formData.message}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
@@ -135,7 +135,7 @@ export function Contact() {
                     </div>
                     <h3 className="text-2xl font-display font-bold text-white mb-2">Message Sent!</h3>
                     <p className="text-accent-secondary">Thanks for reaching out, Shagun will get back to you shortly.</p>
-                    <button 
+                    <button
                       onClick={() => setIsSuccess(false)}
                       className="mt-8 text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
                     >
@@ -144,7 +144,7 @@ export function Contact() {
                   </motion.div>
                 ) : (
                   <motion.form
-                    key="form"
+                    key={isSuccess + formData.name + formData.email + formData.message}
                     onSubmit={handleSubmit}
                     className="space-y-6"
                     initial={{ opacity: 0 }}
@@ -196,8 +196,8 @@ export function Contact() {
                       />
                     </div>
 
-                    <GlassButton 
-                      type="submit" 
+                    <GlassButton
+                      type="submit"
                       disabled={isSubmitting}
                       className="w-full py-5 text-lg flex items-center justify-center gap-3 bg-white text-black hover:bg-white/80 disabled:opacity-50 disabled:cursor-not-allowed group"
                     >

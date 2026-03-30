@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project } from "@/types";
-import { GlassPanel } from "@/components/ui/Glass";
 import { X, ArrowRight } from "lucide-react";
 import { CaseStudy3DElement } from "@/components/canvas/CaseStudy3DElement";
 
@@ -50,20 +49,20 @@ export function CaseStudyDetail({ project, onClose }: CaseStudyDetailProps) {
         <motion.div
           initial={{ opacity: 0, x: "-100%", y: -100, rotate: -15, scale: 0.8 }}
           animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
-          exit={{ 
-            opacity: 0, 
-            x: "180%", 
-            y: -300, 
-            rotate: 35, 
+          exit={{
+            opacity: 0,
+            x: "180%",
+            y: -300,
+            rotate: 35,
             scale: 0.4,
-            transition: { type: "spring", damping: 12, stiffness: 70, mass: 2 } 
+            transition: { type: "spring", damping: 12, stiffness: 70, mass: 2 }
           }}
-          transition={{ 
-            type: "spring", 
-            damping: 20, 
-            stiffness: 80, 
+          transition={{
+            type: "spring",
+            damping: 20,
+            stiffness: 80,
             mass: 1,
-            delay: 0.1 
+            delay: 0.1
           }}
           className="hidden md:flex absolute inset-y-0 left-0 right-176 items-center justify-center pointer-events-auto"
         >
@@ -75,18 +74,18 @@ export function CaseStudyDetail({ project, onClose }: CaseStudyDetailProps) {
           layoutId={`card-${project.id}`}
           initial={{ opacity: 0, x: "100%", y: 100, rotate: 10, scale: 0.9 }}
           animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
-          exit={{ 
-            opacity: 0, 
-            x: "-180%", 
-            y: 300, 
-            rotate: -20, 
+          exit={{
+            opacity: 0,
+            x: "-180%",
+            y: 300,
+            rotate: -20,
             scale: 0.7,
-            transition: { type: "spring", damping: 10, stiffness: 60, mass: 1.5 } 
+            transition: { type: "spring", damping: 10, stiffness: 60, mass: 1.5 }
           }}
-          transition={{ 
-            type: "spring", 
-            damping: 20, 
-            stiffness: 100, 
+          transition={{
+            type: "spring",
+            damping: 20,
+            stiffness: 100,
             mass: 1
           }}
           className="relative w-full max-w-2xl h-full glass-panel rounded-3xl overflow-y-auto elegant-scrollbar pointer-events-auto shadow-2xl"
@@ -137,7 +136,7 @@ export function CaseStudyDetail({ project, onClose }: CaseStudyDetailProps) {
               {project.stats && (
                 <div className="grid grid-cols-2 gap-8 mt-10">
                   {project.stats.map((stat) => (
-                    <div key={stat.label}>
+                    <div key={stat.label + stat.value}>
                       <span className="text-[10px] uppercase tracking-widest text-accent-secondary block mb-1">
                         {stat.label}
                       </span>

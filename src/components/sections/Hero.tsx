@@ -97,7 +97,7 @@ function SplitWords({
     <span className={className} aria-label={text}>
       {words.map((word, i) => (
         <span
-          key={i}
+          key={i + word + text + gradient + className}
           className="inline-block overflow-hidden py-[0.08em]"
           aria-hidden
         >
@@ -120,13 +120,13 @@ function MarqueeStrip() {
       <div className="flex w-max flex-nowrap">
         {[0, 1].map((idx) => (
           <div
-            key={idx}
+            key={idx + MARQUEE_SKILLS.join("")}
             className="flex shrink-0 animate-marquee items-center"
             aria-hidden={idx > 0}
           >
             {MARQUEE_SKILLS.map((skill, i) => (
               <span
-                key={`${idx}-${i}`}
+                key={`${idx}-${i}` + skill + MARQUEE_SKILLS.join("")}
                 className="flex items-center gap-3 px-4 text-[10px] font-dm font-medium text-white/20 tracking-[0.2em] uppercase whitespace-nowrap transition-colors hover:text-white/50"
               >
                 <span className="w-[4px] h-[4px] rounded-full bg-violet/40 shrink-0" />
@@ -335,7 +335,7 @@ export default function HeroSection() {
               <div className="rounded-[14px] overflow-hidden bg-bg">
                 <Image
                   src="/assets/og-image.png"
-                  alt="Shagun Tiwari"
+                  alt={siteConfig.name}
                   width={280}
                   height={280}
                   className="w-56 h-56 xl:w-64 xl:h-64 object-cover rounded-[14px] opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
@@ -363,7 +363,7 @@ export default function HeroSection() {
               <div className="rounded-full overflow-hidden bg-bg">
                 <Image
                   src="/assets/og-image.png"
-                  alt="Shagun Tiwari"
+                  alt={siteConfig.name}
                   width={160}
                   height={160}
                   className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-cover rounded-full opacity-90"
@@ -452,7 +452,7 @@ export default function HeroSection() {
         {/* ── Stats ── */}
         <div className="flex flex-wrap gap-x-10 gap-y-5">
           {STATS.map(({ value, label }, i) => (
-            <div key={i} className="stat-item group">
+            <div key={i + value + label + STATS.join("")} className="stat-item group">
               <div className="font-raleway font-bold text-2xl md:text-3xl text-white/90 tracking-tight group-hover:gradient-text transition-all duration-300">
                 {value}
               </div>
@@ -470,7 +470,7 @@ export default function HeroSection() {
         <div className="flex items-center gap-3">
           {SOCIALS.map(({ Icon, href, label }) => (
             <motion.a
-              key={label}
+              key={label + href + Icon.name}
               href={href}
               target="_blank"
               rel="noopener noreferrer"

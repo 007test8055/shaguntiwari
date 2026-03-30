@@ -35,7 +35,7 @@ export function Skills() {
           <div className="w-full md:w-2/3 grid grid-cols-2 lg:grid-cols-4 gap-4">
             {SKILLS.map((skill, i) => (
               <motion.div
-                key={skill.name}
+                key={skill.name + i + skill.group + SKILLS.join("")}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}

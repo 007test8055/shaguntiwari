@@ -28,23 +28,21 @@ export function Experience() {
 
           {experience.map((exp, i) => (
             <motion.div
-              key={exp.id}
+              key={exp.id + exp.role + exp.company + exp.period}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className={`relative flex flex-col md:flex-row items-start md:items-center ${
-                i % 2 === 0 ? "md:flex-row-reverse" : ""
-              }`}
+              className={`relative flex flex-col md:flex-row items-start md:items-center ${i % 2 === 0 ? "md:flex-row-reverse" : ""
+                }`}
             >
               {/* Timeline dot */}
               <div className="absolute left-[16.5px] md:left-1/2 md:-translate-x-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] z-10" />
 
               {/* Offset for mobile */}
-              <div 
-                className={`w-full md:w-1/2 pl-12 ${
-                  (i & 1) !== 1 ? "md:pl-12 md:pr-0" : "md:pl-0 md:pr-12"
-                }`}
+              <div
+                className={`w-full md:w-1/2 pl-12 ${(i & 1) !== 1 ? "md:pl-12 md:pr-0" : "md:pl-0 md:pr-12"
+                  }`}
               >
                 <GlassPanel className="p-6 hover:border-white/20 transition-colors">
                   <div className="flex flex-col gap-1 mb-4">
@@ -57,7 +55,7 @@ export function Experience() {
                   </div>
                   <ul className="space-y-2">
                     {exp.description.map((bullet, idx) => (
-                      <li key={idx} className="text-sm font-body text-accent-secondary leading-relaxed flex gap-2">
+                      <li key={idx + bullet} className="text-sm font-body text-accent-secondary leading-relaxed flex gap-2">
                         <span className="opacity-50 text-white">•</span>
                         {bullet}
                       </li>
@@ -66,7 +64,7 @@ export function Experience() {
                   <div className="flex flex-wrap gap-2 mt-6">
                     {exp.skills.map((skill) => (
                       <span
-                        key={skill}
+                        key={skill + exp.id + exp.role + exp.company + exp.period}
                         className="text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/10 text-accent-secondary"
                       >
                         {skill}
